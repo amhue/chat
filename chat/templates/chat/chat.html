@@ -28,12 +28,15 @@
         }, 1000);
       });
     </script>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'chat/favicon.png' %}" />
     <style>
       :root {
         --darker-black: #1a1a1a;
         --lighter-black: #272727;
         --darker-grey: #3b3b3b;
         --lighter-grey: #555555;
+        --lightest-grey: #cccccc;
         --white: #fffeee;
       }
 
@@ -107,18 +110,26 @@
         max-width: 100%;
         overflow-wrap: break-word;
       }
+
+      .date,
+      .user {
+        font-size: 0.9em;
+        color: var(--lightest-grey);
+        margin-bottom: -0.3em;
+        margin-top: -0.3em;
+      }
     </style>
     <!-- <meta http-equiv="refresh" content="1" /> -->
   </head>
   <body>
     <h1>Chat Room</h1>
-    <h2>Welcome, {{ user }}</h2>
+    <h2>Welcome, {{ user }}!</h2>
     <div id="messages">
       {% for message in messages %}
-      <div>
-        <p>~{{ message.user.username }}</p>
-        <p>{{ message.content }}</p>
-        <p>{{ message.created_at|date:"H:i:s" }}</p>
+      <div {% if message.user.username == user %} style="text-align: right;" {% endif %}>
+        <p class="user">~{{ message.user.username }}</p>
+        <p class="content">{{ message.content }}</p>
+        <p class="date">{{ message.created_at|date:"Y-m-d H:i:s" }}</p>
       </div>
       {% empty %}
       <p id="empty" style="text-align: center">No messages yet.</p>

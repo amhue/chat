@@ -29,7 +29,9 @@ def chat(req: HttpRequest) -> HttpResponse:
     user = req.session.get("user")
     if user:
         messages = Message.objects.all().order_by("created_at")
-        return render(req, "chat/chat.html", {"user": user, "messages": messages})
+        return render(
+            req, "chat/chat.html", {"user": user, "messages": messages}
+        )
     else:
         return redirect("user_select")
 

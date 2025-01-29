@@ -3,7 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'chat/favicon.png' %}" />
     <title>Select User</title>
+    <style>
+      :root {
+        --darker-black: #1a1a1a;
+        --lighter-black: #272727;
+        --darker-grey: #3b3b3b;
+        --lighter-grey: #555555;
+        --lightest-grey: #cccccc;
+        --white: #fffeee;
+      }
+
+      body {
+        background-color: var(--darker-black);
+        color: var(--white);
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          "Open Sans",
+          "Helvetica Neue",
+          sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+        font-weight: 500;
+        font-size: 2.5em;
+      }
+
+      form {
+        border: 2px solid var(--lighter-grey);
+        border-radius: 0.5em;
+        width: 80vw;
+        max-width: 40em;
+        margin: auto;
+        max-height: calc(90vh - 10em);
+        height: 10em;
+        overflow-x: scroll;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+
+      form * {
+        font-size: 1em;
+        color: var(--white);
+        background-color: var(--darker-black);
+        padding: 0.5em;
+        border-radius: 0.5em;
+        border: solid var(--lighter-grey) 2px;
+      }
+
+      label {
+        border: none;
+      }
+
+      [type="submit"] {
+        cursor: pointer;
+        max-width: 10em;
+      }
+    </style>
   </head>
   <body>
     <h1>Select User</h1>
