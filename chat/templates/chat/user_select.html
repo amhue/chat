@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select User</title>
+  </head>
+  <body>
+    <h1>Select User</h1>
+    <form method="POST">
+      {% csrf_token %}
+      <label for="user">Enter your username:</label>
+      <input type="text" id="user" name="user" required />
+      <button type="submit">Join Chat</button>
+    </form>
+
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </body>
+</html>

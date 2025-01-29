@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Chat Room</title>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("message").focus();
+        const message = document.getElementById("messages");
+        message.scrollTo(0, message.scrollHeight);
+
+        setInterval(() => {
+          const message = document.getElementById("messages");
+          const isBottom =
+            message.scrollHeight - message.clientHeight <=
+            message.scrollTop + 1;
+          fetch("{% url 'chat'%}")
+            .then((res) => res.text())
+            .then((text) => {
+              const message = document.getElementById("messages");
+              document.getElementById("messages").innerHTML = new DOMParser()
+                .parseFromString(text, "text/html")
+                .getElementById("messages").innerHTML;
+
+              if (isBottom) {
+                message.scrollTo(0, message.scrollHeight);
+              }
+            });
+        }, 1000);
+      });
+    </script>
+    <style>
+      :root {
+        --darker-black: #1a1a1a;
+        --lighter-black: #272727;
+        --darker-grey: #3b3b3b;
+        --lighter-grey: #555555;
+        --white: #fffeee;
+      }
+
+      body {
+        background-color: var(--darker-black);
+        color: var(--white);
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          "Open Sans",
+          "Helvetica Neue",
+          sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+        font-weight: 500;
+        font-size: 2.5em;
+      }
+
+      h2 {
+        text-align: center;
+        font-weight: 400;
+        margin-top: -0.8em;
+        margin-bottom: 1.5em;
+      }
+
+      #messages {
+        border: 2px solid var(--lighter-grey);
+        border-radius: 0.5em;
+        width: 80vw;
+        max-width: 40em;
+        margin: auto;
+        max-height: calc(90vh - 10em);
+        overflow-x: scroll;
+      }
+
+      #empty {
+        font-size: 1.5em;
+      }
+
+      form {
+        position: absolute;
+        bottom: 1.5em;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      form * {
+        font-size: 1em;
+        color: var(--white);
+        background-color: var(--darker-black);
+        padding: 0.5em;
+        border-radius: 0.5em;
+        border: solid var(--lighter-grey) 2px;
+      }
+
+      [type="submit"] {
+        cursor: pointer;
+      }
+
+      #messages div {
+        padding: 1em;
+        border: solid 1px var(--lighter-grey);
+        max-width: 100%;
+        overflow-wrap: break-word;
+      }
+    </style>
+    <!-- <meta http-equiv="refresh" content="1" /> -->
+  </head>
+  <body>
+    <h1>Chat Room</h1>
+    <h2>Welcome, {{ user }}</h2>
+    <div id="messages">
+      {% for message in messages %}
+      <div>
+        <p>~{{ message.user.username }}</p>
+        <p>{{ message.content }}</p>
+        <p>{{ message.created_at|date:"H:i:s" }}</p>
+      </div>
+      {% empty %}
+      <p id="empty" style="text-align: center">No messages yet.</p>
+      {% endfor %}
+    </div>
+
+    <form method="POST" action="{% url 'send' %}">
+      {% csrf_token %}
+      <input
+        id="message"
+        type="text"
+        name="content"
+        placeholder="Type your message here"
+        required
+      />
+      <button type="submit">✈</button>
+    </form>
+  </body>
+</html>
